@@ -11,26 +11,18 @@
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+$this->get('admin', 'Admin\AdminController@index')->name('admin.home');
+$this->get('collaborator', 'Collaborator\CollaboratorController@index')->name('collaborator.home');
+$this->get('login', function (){return view('auth.login');})->name('auth.login');
 
-//Route::get('/home', 'HomeController@index')->name('home');
-
-Auth::routes();
-
-
-Route::group(['middleware' => ['web', 'auth']], function(){
-//    Route::get('/', function(){
-//       return view('welcome');
-//    });
-
+$this->group(['middleware' => ['web', 'auth']], function() {
     Route::get('/', function(){
         if(Auth::user()->is_admin == 0){
-           return view('collaborator');
+            return redirect()->route('collaborator.home');
         } else {
-            $users['users'] = \App\User::all();
-            return view('admin', $users);
+            return redirect()->route('admin.home');
         }
     });
 });
+
+Auth::routes();

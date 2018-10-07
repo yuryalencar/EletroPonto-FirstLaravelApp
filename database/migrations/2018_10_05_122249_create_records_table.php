@@ -17,6 +17,8 @@ class CreateRecordsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('last_user_modifier')->unsigned();
+            $table->foreign('last_user_modifier')->references('id')->on('users')->onDelete('cascade');
             $table->time('business_hours');
             $table->enum('type', ['I', 'O', 'L']);
             $table->date('date');

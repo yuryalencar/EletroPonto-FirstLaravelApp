@@ -130,7 +130,7 @@ return [
         [
             'text'    => 'Records',
             'icon'    => 'share',
-            //'can'     => 'admin',
+            'can'     => 'admin',
             'submenu' => [
                 [
                     'text' => 'Personal Record',
