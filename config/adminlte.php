@@ -108,45 +108,39 @@ return [
     */
 
     'menu' => [
-        'MENU',
+        'MAIN MENU',
         [
             'text'        => 'Home',
-            'url'         => 'admin',
+            'url'         => 'dashboard',
             'icon'        => 'home',
-            //'label'       => 4,
-            //'label_color' => 'success',
         ],
         'ACCOUNT SETTINGS',
         [
             'text' => 'Profile',
             'url'  => 'admin/settings',
-            'icon' => 'user',
+            'icon' => 'user-circle',
         ],
         [
             'text' => 'Change Password',
             'url'  => 'admin/settings',
             'icon' => 'lock',
         ],
+        'REPORTING',
         [
-            'text'    => 'Records',
-            'icon'    => 'share',
-            'can'     => 'admin',
-            'submenu' => [
-                [
-                    'text' => 'Personal Record',
-                    'url'  => '#',
-                ],
-                [
-                    'text' => 'Collaborators Record',
-                    'url'  => '#',
-
-                ],
-            ],
+            'text' => 'Personal Time Record',
+            'icon'    => 'user',
+            'url'  => '#',
         ],
         [
-            'text'    => 'Personal Record',
-            'icon'    => 'share',
-            'can'     => 'collaborator',
+            'text' => 'Employee Time Record',
+            'url'  => '#',
+            'icon'    => 'users',
+            'can'     => 'admin',
+        ],
+        [
+            'text' => 'History',
+            'url'  => '#',
+            'icon'    => 'history',
         ],
     ],
 

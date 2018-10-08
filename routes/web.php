@@ -11,17 +11,13 @@
 |
 */
 
-$this->get('admin', 'Admin\AdminController@index')->name('admin.home');
-$this->get('collaborator', 'Collaborator\CollaboratorController@index')->name('collaborator.home');
-$this->get('login', function (){return view('auth.login');})->name('auth.login');
+$this->get('dashboard', 'Navigation\NavigationController@index')->name('navigation.home');
+$this->get('login', function (){return view('auth.login');});
 
-$this->group(['middleware' => ['web', 'auth']], function() {
+
+$this->group(['middleware' => ['auth']], function() {
     Route::get('/', function(){
-        if(Auth::user()->is_admin == 0){
-            return redirect()->route('collaborator.home');
-        } else {
-            return redirect()->route('admin.home');
-        }
+        return redirect()->route('navigation.home');
     });
 });
 
