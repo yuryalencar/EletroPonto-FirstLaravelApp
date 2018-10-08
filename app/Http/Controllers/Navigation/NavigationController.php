@@ -20,14 +20,11 @@ class NavigationController extends Controller
      */
     public function index()
     {
-        if (Auth::check() && (Gate::allows('admin'))) {
+        if ((Gate::allows('admin'))) {
             return view('admin.home.index');
-        } else if (Auth::check()){
-            return view('collaborator.home.index');
         } else {
-            return redirect()->route('login');
+            return view('collaborator.home.index');
         }
     }
-
 
 }

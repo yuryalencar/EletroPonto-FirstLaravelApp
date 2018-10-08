@@ -11,7 +11,7 @@
 |
 */
 
-$this->get('dashboard', 'Navigation\NavigationController@index')->name('navigation.home');
+$this->get('dashboard', 'Navigation\NavigationController@index')->middleware('verify.user')->name('navigation.home');
 $this->get('login', function (){return view('auth.login');});
 
 
