@@ -85,7 +85,7 @@ return [
     |
     */
 
-    'dashboard_url' => 'admin',
+    'dashboard_url' => 'dashboard',
 
     'logout_url' => 'logout',
 
@@ -110,37 +110,48 @@ return [
     'menu' => [
         'MAIN MENU',
         [
-            'text'        => 'Home',
-            'url'         => 'dashboard',
-            'icon'        => 'home',
+            'text' => 'Home',
+            'url' => 'dashboard',
+            'icon' => 'home',
         ],
         'ACCOUNT SETTINGS',
         [
             'text' => 'Profile',
-            'url'  => 'admin/settings',
+            'url' => 'admin/settings',
             'icon' => 'user-circle',
         ],
         [
             'text' => 'Change Password',
-            'url'  => 'admin/settings',
+            'url' => 'admin/settings',
             'icon' => 'lock',
         ],
         'REPORTING',
         [
             'text' => 'Personal Time Record',
-            'icon'    => 'user',
-            'url'  => '#',
+            'icon' => 'user',
+            'url' => 'personal_record',
         ],
         [
             'text' => 'Employee Time Record',
-            'url'  => '#',
-            'icon'    => 'users',
-            'can'     => 'admin',
+            'url' => 'employee_record',
+            'icon' => 'users',
+            'can' => 'admin',
         ],
         [
             'text' => 'History',
-            'url'  => '#',
-            'icon'    => 'history',
+            'url' => '#',
+            'icon' => 'history',
+            'submenu' => [
+                [
+                    'text' => 'Personal history',
+                    'url' => 'personal_history',
+                ],
+                [
+                    'text' => 'History of Employees',
+                    'url' => 'history_employees',
+                    'can' => 'admin'
+                ],
+            ]
         ],
     ],
 
@@ -177,7 +188,7 @@ return [
 
     'plugins' => [
         'datatables' => true,
-        'select2'    => true,
-        'chartjs'    => true,
+        'select2' => true,
+        'chartjs' => true,
     ],
 ];

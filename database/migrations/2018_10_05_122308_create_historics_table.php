@@ -17,7 +17,15 @@ class CreateHistoricsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->time('total_business_hours');
+
+            $table->integer('record_id')->unsigned();
+            $table->foreign('record_id')->references('id')->on('records')->onDelete('cascade');
+
+            $table->time('business_hours');
+            $table->time('business_hours_old')->nullable();
+
+            $table->enum('type', ['E', 'B', 'L']);
+
             $table->timestamps();
         });
     }

@@ -12,6 +12,13 @@
 */
 
 $this->get('dashboard', 'Navigation\NavigationController@index')->middleware('verify.user')->name('navigation.home');
+
+$this->get('personal_record', 'Navigation\NavigationController@personal_record')->middleware('verify.user')->name('navigation.personal.record');
+$this->get('employee_record', 'Navigation\NavigationController@employee_record')->middleware('verify.user')->name('navigation.personal.record');
+
+$this->get('personal_history', 'Navigation\NavigationController@personal_history')->middleware('verify.user')->name('navigation.personal.record');
+$this->get('history_employees', 'Navigation\NavigationController@history_employees')->middleware('verify.user')->name('navigation.personal.record');
+
 $this->get('login', function (){return view('auth.login');});
 
 

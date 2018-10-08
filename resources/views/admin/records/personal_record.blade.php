@@ -1,13 +1,13 @@
 @extends('adminlte::page')
 
-@section('title', 'EletronicPoint')
+@section('title', 'Personal Time Record')
 
 @section('content_header')
-    <h1>Registros</h1>
+    <h1>Personal Time Record</h1>
 @stop
 
 @section('content')
     <div class="alert alert-success">
-        <p>You are logged in USERS!</p>
+        <p>You are logged in ADMINISTRATORS!</p>
     </div>
 @stop

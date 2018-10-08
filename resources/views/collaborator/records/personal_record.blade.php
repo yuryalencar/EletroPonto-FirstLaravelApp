@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'EletronicPoint')
+@section('title', 'Personal Time Record')
 
 @section('content_header')
-    <h1>Registros</h1>
+    <h1>Personal Time Record</h1>
 @stop
 
 @section('content')
