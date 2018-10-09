@@ -21,10 +21,7 @@ class CreateHistoricsTable extends Migration
             $table->integer('record_id')->unsigned();
             $table->foreign('record_id')->references('id')->on('records')->onDelete('cascade');
 
-            $table->time('business_hours');
-            $table->time('business_hours_old')->nullable();
-
-            $table->enum('type', ['E', 'B', 'L']);
+            $table->dateTime('business_hours');
 
             $table->timestamps();
         });

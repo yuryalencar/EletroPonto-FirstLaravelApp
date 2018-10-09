@@ -19,7 +19,9 @@ class CreateRecordsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->time('business_hours');
+            $table->dateTime('business_hours');
+            $table->enum('type', ['I', 'II', 'OI', 'O']);
+
             $table->timestamps();
         });
     }

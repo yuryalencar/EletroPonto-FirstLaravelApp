@@ -2,9 +2,12 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Record;
+use App\Models\Historic;
 
 class User extends Authenticatable
 {
@@ -27,6 +30,16 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function records()
+    {
+        return $this->hasMany(Record::class);
+    }
+
+    public function historics()
+    {
+        return $this->hasMany(Historic::class);
+    }
 
     public function isAdmin(){
         return Auth::user()->is_admin == 1;

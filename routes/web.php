@@ -20,6 +20,7 @@ $this->get('personal_history', 'Navigation\NavigationController@personal_history
 $this->get('history_employees', 'Navigation\NavigationController@history_employees')->middleware('verify.user')->name('navigation.personal.records');
 
 $this->post('record_current_time', 'Record\RecordController@record_current_time')->middleware('verify.user')->name('records.personal.current');
+$this->post('record_time', 'Record\RecordController@record_time')->middleware('verify.user')->name('records.personal');
 
 $this->get('login', function (){return view('auth.login');});
 
