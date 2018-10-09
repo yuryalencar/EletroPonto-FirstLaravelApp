@@ -28,19 +28,17 @@ class NavigationController extends Controller
     }
 
     /**
-     * This method verify access level and redirect for respective personal time record page
+     * This method does not need to check the level of access to redirect the respective personal time records page
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function personal_record(){
-        if ((Gate::allows('admin'))) {
-            return view('admin.records.personal_record');
-        } else {
-            return view('collaborator.records.personal_record');
-        }
+
+        return view('users.records.personal_record');
+
     }
 
     /**
-     * This method verify access level and redirect for respective employee time record page
+     * This method verify access level and redirect for respective employee time records page
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function employee_record(){

@@ -3,7 +3,7 @@
 @section('title', 'EletronicPoint')
 
 @section('content_header')
-    <h1>Registros</h1>
+    <h1>Last Records</h1>
 @stop
 
 @section('content')

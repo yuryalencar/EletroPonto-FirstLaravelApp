@@ -139,7 +139,6 @@ return [
         ],
         [
             'text' => 'History',
-            'url' => '#',
             'icon' => 'history',
             'submenu' => [
                 [

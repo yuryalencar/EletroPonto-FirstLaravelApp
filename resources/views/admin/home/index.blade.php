@@ -7,6 +7,7 @@
 @stop
 
 @section('content')
+
     <div class="alert alert-success">
         <p>You are logged in ADMINISTRATORS!</p>
     </div>
