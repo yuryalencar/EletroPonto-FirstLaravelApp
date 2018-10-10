@@ -21,6 +21,9 @@ $this->get('history_employees', 'Navigation\NavigationController@history_employe
 
 $this->post('record_current_time', 'Record\RecordController@record_current_time')->middleware('verify.user')->name('records.personal.current');
 $this->post('record_time', 'Record\RecordController@record_time')->middleware('verify.user')->name('records.personal');
+$this->any('search_personal_records', 'Record\RecordController@search_personal_records')->middleware('verify.user')->name('records.personal.search');
+
+$this->post('historic_record', 'Record\RecordController@historic_record')->middleware('verify.user')->name('record.historic');
 
 $this->get('login', function (){return view('auth.login');});
 

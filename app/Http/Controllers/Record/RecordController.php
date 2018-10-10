@@ -10,6 +10,17 @@ use Carbon\Carbon;
 
 class RecordController extends Controller
 {
+
+    private $total_page = 10;
+
+    public function search_personal_records(Request $request, Record $record){
+        $data_form = $request->except('_token');
+        $records = $record->search_personal_records($data_form, $this->total_page, auth()->user()->id);
+        $types = $record->getAllTypes();
+
+        return view('collaborator.home.index', compact('records', 'types', 'data_form'));
+    }
+
     /**
      * This method record in database a current time and insert in table historic a historic
      * @param Request $request

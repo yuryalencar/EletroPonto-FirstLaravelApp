@@ -9,7 +9,7 @@
 @section('content')
     <div class="box">
         <div class="box-header">
-            <h3 class="box-title">Data Table With Full Features</h3>
+            <h3 class="box-title">History per Day</h3>
         </div>
         <div class="box-body">
             <table class="table table-bordered table-hover">
@@ -21,23 +21,23 @@
                     <th>Return to Work</th>
                     <th>Leave work</th>
                     <th>Total Hours Worked</th>
-                    <th>Record Details</th>
                 </tr>
                 </thead>
                 <tbody>
-                @forelse ($historic_formated as $historic)
+                @forelse ($record_formated as $record)
                     <tr>
-                        <td>{{$historic['date']}}</td>
-                        <td>{{$historic['entry']}}</td>
-                        <td>{{$historic['break_work']}}</td>
-                        <td>{{$historic['return_work']}}</td>
-                        <td>{{$historic['leave_work']}}</td>
-                        <td>{{$historic['total_hours']}}</td>
+                        <td>{{$record['date']}}</td>
+                        <td>{{$record['entry']}}</td>
+                        <td>{{$record['break_work']}}</td>
+                        <td>{{$record['return_work']}}</td>
+                        <td>{{$record['leave_work']}}</td>
+                        <td>{{$record['total_hours']}}</td>
                     </tr>
                 @empty
                 @endforelse
                 </tbody>
             </table>
+
         </div>
     </div>
 @stop

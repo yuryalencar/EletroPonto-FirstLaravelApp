@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Navigation;
 
+use App\Models\Historic;
+use App\Models\Record;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
@@ -15,16 +17,20 @@ use Carbon\Carbon;
  */
 class NavigationController extends Controller
 {
+    private $total_page = 10;
     /**
      *  This method verify access level and redirect for respective dashboard page
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
-    public function index()
+    public function index(Record $record)
     {
         if ((Gate::allows('admin'))) {
             return view('admin.home.index');
         } else {
-            return view('collaborator.home.index');
+            $records = auth()->user()->records()->paginate($this->total_page);
+
+            $types = $record->getAllTypes();
+            return view('collaborator.home.index', compact('records', 'types'));
         }
     }
 
@@ -44,7 +50,8 @@ class NavigationController extends Controller
     public function employee_record()
     {
         if ((Gate::allows('admin'))) {
-            return view('admin.records.employee_record');
+            $users = Auth::user()->all()->where('is_admin', 0);
+            return view('admin.records.employee_record', compact('users'));
         } else {
             return redirect()->route('navigation.home');
         }
@@ -69,54 +76,9 @@ class NavigationController extends Controller
      */
     public function personal_history()
     {
-        $records = auth()->user()->records;
 
-        // For create a format historic
-        $historic_formated = array();
-        for ($i = 0; $i < ceil(sizeof($records) / 4); $i++) {
-            array_push($historic_formated, [
-                'date' => "",
-                'entry' => "",
-                'break_work' => "",
-                'return_work' => "",
-                'leave_work' => "",
-                'total_hours' => 0,
-            ]);
-        }
-        
-        $index = 0;
-        for ($i = 0; $i < sizeof($records); $i++) {
-            switch ($records[$i]['type']) {
-                case 'I':
-                    $historic_formated[$index]['date'] = date('d/m/Y', strtotime($records[$i]->business_hours));
-                    $newCarbon = new Carbon($records[$i]->business_hours);
-                    $historic_formated[$index]['entry'] = $newCarbon;
-                    break;
-                case 'II':
-                    $newCarbon = new Carbon($records[$i]->business_hours);
-                    $historic_formated[$index]['break_work'] = $newCarbon;
-
-                    $newCarbonDif = new Carbon($historic_formated[$index]['entry']);
-                    $historic_formated[$index]['total_hours'] = $newCarbonDif->diffInHours($newCarbon);
-                    break;
-                case 'OI':
-                    $newCarbon = new Carbon($records[$i]->business_hours);
-
-                    $historic_formated[$index]['return_work'] = $newCarbon;
-                    break;
-                case 'O':
-                    $newCarbon = new Carbon($records[$i]->business_hours);
-
-                    $historic_formated[$index]['leave_work'] = $newCarbon;
-
-                    $historic_formated[$index]['total_hours'] = 10;
-                    $index++;
-                    break;
-            }
-        }
-        //dd($historic_formated);
-
-        return view('users.history.personal_history', compact('historic_formated'));
+        $record_formated = auth()->user()->historic_formated();
+        return view('users.history.personal_history', compact('record_formated'));
     }
 
 }
