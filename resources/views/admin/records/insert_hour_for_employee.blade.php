@@ -1,13 +1,13 @@
 @extends('adminlte::page')
 
-@section('title', 'Personal Time Record')
+@section('title', 'Employee Time Record')
 
 @section('content_header')
-    <h1>Personal Time Record</h1>
+    <h1>Employee Time Record</h1>
 @stop
 
 @section('content')
-    <div>
+    <div class="box">
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -16,32 +16,41 @@
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
-            </div><br/>
+            </div>
         @endif
 
-        @if (\Session::has('success_insert_personal_data'))
+        @if (\Session::has('success_insert_data'))
             <div class="alert alert-success">
-                <p>{{ \Session::get('success_insert_personal_data') }}</p>
-            </div><br/>
+                <p>{{\Session::get('success_insert_data')}}</p>
+            </div>
+        @endif
+
+        @if (\Session::has('error_insert_data'))
+            <div class="alert alert-danger">
+                <p>{{\Session::get('error_insert_data')}}</p>
+            </div>
         @endif
 
         <div class="box box-title">
 
             <div class="box-header">
-                <h3 class="box-title">Insert a new record:</h3>
+                <h3 class="box-title">Insert a new record for {{$user->name}}:</h3>
             </div>
 
             <div class="box-body">
 
                 <div class="form-group">
 
-                    <label>Insert Current Time:</label>
+                    <label>Insert Time:</label>
                     <!-- This is the form for the registration point that inserts an hour -->
 
-                    <form method="post" action="{{ route('records.personal.current') }}">
+                    <form method="post" action="{{ route('insert.employee.records') }}">
                         {!! csrf_field() !!}
+                        <input type="time" name="time" class="form-control"/>
                         <div class="input-group">
-                            <button type="submit" class="btn btn-block btn-primary">Record Current Time</button>
+                            <button type="submit" name="user_id" value="{{$user->id}}"
+                                    class="btn btn-block btn-primary">Record Time
+                            </button>
 
                             <div class="input-group-addon">
                                 <i class="fa fa-save"></i>
@@ -55,5 +64,6 @@
             </div>
 
         </div>
+
     </div>
 @stop

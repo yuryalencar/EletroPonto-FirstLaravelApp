@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Record;
 use App\Models\Historic;
 use Carbon\Carbon;
+use App\User;
 use Illuminate\Support\Facades\Gate;
 
 class RecordController extends Controller
@@ -14,10 +15,50 @@ class RecordController extends Controller
 
     private $total_page = 10;
 
-    public function historic_record(Request $request, Record $record){
+    /**
+     *
+     * @param Request $request
+     * @param User $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function insert_employee_record(Request $request, User $user)
+    {
+        $user = $user->get_by_id($request['user_id']);
+
+        if (!(isset($request['time'])) or $request['time'] == "") {
+            $request->session()->flash("error_insert_data", "Invalid time, please check field");
+            return view('admin.records.insert_hour_for_employee', compact('user'));
+        }
+
+        $user = $user->get_by_id($request['user_id']);
+        $date_time = new Carbon($request['time']);
+
+        $record = [
+            'user_id' => auth()->user()->id,
+            'business_hours' => $date_time,
+            'type' => $this->detect_type($user)
+        ];
+
+        $record = $user->records()->create($record);
+
+        $this->register_historic($record, auth()->user());
+
+        $request->session()->flash("success_insert_data", "Record has been added");
+        return view('admin.records.insert_hour_for_employee', compact('user'));
+    }
+
+    /**
+     * This function get a record historic
+     * @param Request $request
+     * @param Record $record
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function historic_record(Request $request, Record $record)
+    {
         $data_form = $request->except('_token');
         if ((Gate::allows('admin'))) {
             dd($record->get_record_by_id($data_form['id_record']));
+            //@TODO
         } else {
             $historic = $record->get_record_by_id_and_user_id($data_form['id_record'], auth()->user()->id)->first()->historics();
 
@@ -32,7 +73,8 @@ class RecordController extends Controller
      * @param Record $record
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function search_personal_records(Request $request, Record $record){
+    public function search_personal_records(Request $request, Record $record)
+    {
         $data_form = $request->except('_token');
         $records = $record->search_personal_records($data_form, $this->total_page, auth()->user()->id);
         $types = $record->getAllTypes();
@@ -52,21 +94,21 @@ class RecordController extends Controller
         $record = [
             'user_id' => auth()->user()->id,
             'business_hours' => $now,
-            'type' => $this->detect_type()
+            'type' => $this->detect_type(auth()->user())
         ];
 
         $record = auth()->user()->records()->create($record);
 
-        $this->register_historic($record);
+        $this->register_historic($record, auth()->user());
 
-        return back()->with('success', 'Record has been added');
+        return back()->with('success_insert_personal_data', 'Record has been added');
     }
 
     /**
      * This purpose method is register historic
      * @param $record
      */
-    public function register_historic(Record $record)
+    public function register_historic(Record $record, $user)
     {
 
         $historic_record = [
@@ -75,16 +117,16 @@ class RecordController extends Controller
             'business_hours' => $record->attributesToArray()['business_hours'],
         ];
 
-        auth()->user()->historics()->create($historic_record);
+        $user->historics()->create($historic_record);
     }
 
     /**
      * This method purpose is detect type of last record
      * @return string
      */
-    public function detect_type()
+    public function detect_type($user)
     {
-        $user_records = auth()->user()->records;
+        $user_records = $user->records;
 
         if ($user_records->isEmpty()) {
             return 'I';

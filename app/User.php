@@ -41,6 +41,12 @@ class User extends Authenticatable
         return $this->hasMany(Historic::class);
     }
 
+    public function get_by_id($id){
+        $user = $this->where('id', $id);
+
+        return $user->first();
+    }
+
     public function historic_formated()
     {
         $records = $this->records()->get();

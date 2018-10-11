@@ -8,10 +8,13 @@
 
 @section('content')
     <div class="box">
+
         <div class="box-header">
             <h3 class="box-title">Detailed History</h3>
         </div>
+
         <div class="box-body">
+
             <table class="table table-bordered table-hover">
                 <thead>
                 <tr>

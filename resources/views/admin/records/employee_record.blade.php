@@ -12,29 +12,35 @@
             <h3 class="box-title">Choose a Collaborator</h3>
         </div>
         <div class="box-body">
-            <table class="table table-bordered table-hover">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Contact</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                @forelse ($users as $user)
+            <form action="{{route('view.insert.records.employee')}}" method="POST" class="form form-inline">
+                {!! csrf_field() !!}
+
+                <table class="table table-bordered table-hover">
+                    <thead>
                     <tr>
-                        <td>{{$user->id}}</td>
-                        <td>{{$user->name}}</td>
-                        <td>{{$user->email}}</td>
-                        <td>
-                            <button type="submit" name="{{$user->id}}" class="btn btn-bitbucket">Select Here</button>
-                        </td>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Contact</th>
+                        <th>Action</th>
                     </tr>
-                @empty
-                @endforelse
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    @forelse ($users as $user)
+                        <tr>
+                            <td>{{$user->id}}</td>
+                            <td>{{$user->name}}</td>
+                            <td>{{$user->email}}</td>
+                            <td>
+                                <button type="submit" name="user_id" value="{{$user->id}}" class="btn btn-bitbucket">Select Here
+                                </button>
+                            </td>
+                        </tr>
+                    @empty
+                    @endforelse
+                    </tbody>
+                </table>
+
+            </form>
 
         </div>
     </div>

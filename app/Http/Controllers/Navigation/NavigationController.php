@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Navigation;
 
 use App\Models\Historic;
 use App\Models\Record;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
@@ -18,6 +19,7 @@ use Carbon\Carbon;
 class NavigationController extends Controller
 {
     private $total_page = 10;
+
     /**
      *  This method verify access level and redirect for respective dashboard page
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
@@ -80,5 +82,22 @@ class NavigationController extends Controller
         $record_formated = auth()->user()->historic_formated();
         return view('users.history.personal_history', compact('record_formated'));
     }
+
+    /**
+     * This method check user logged and redirect for view if is admin user
+     * @param Request $request
+     * @param User $user
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function record_employee_view(Request $request, User $user)
+    {
+        if ((Gate::allows('admin'))) {
+            $user = $user->get_by_id($request['user_id']);
+
+            return view('admin.records.insert_hour_for_employee', compact('user'));
+        }
+
+    }
+
 
 }
