@@ -35,17 +35,19 @@
                 </thead>
                 <tbody>
                 <form action="{{route('record.historic')}}" method="POST" class="form form-inline">
-                @foreach($records as $record)
-                    <tr>
-                        <td>{{$record->id}}</td>
-                        <td>{{$record->getDate()}}</td>
-                        <td>{{$record->getHour()}}</td>
-                        <td>{{$record->getType()}}</td>
-                        <td>
-                            <button type="submit" name="{{$record->id}}" class="btn btn-bitbucket">View More</button>
-                        </td>
-                    </tr>
-                @endforeach
+                    {!! csrf_field() !!}
+                    @foreach($records as $record)
+                        <tr>
+                            <td>{{$record->id}}</td>
+                            <td>{{$record->getDate()}}</td>
+                            <td>{{$record->getHour()}}</td>
+                            <td>{{$record->getType()}}</td>
+                            <td>
+                                <button type="submit" name="id_record" value="{{$record->id}}" class="btn btn-bitbucket">View More
+                                </button>
+                            </td>
+                        </tr>
+                    @endforeach
                 </form>
                 </tbody>
             </table>

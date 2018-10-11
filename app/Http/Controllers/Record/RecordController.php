@@ -7,12 +7,31 @@ use App\Http\Controllers\Controller;
 use App\Models\Record;
 use App\Models\Historic;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Gate;
 
 class RecordController extends Controller
 {
 
     private $total_page = 10;
 
+    public function historic_record(Request $request, Record $record){
+        $data_form = $request->except('_token');
+        if ((Gate::allows('admin'))) {
+            dd($record->get_record_by_id($data_form['id_record']));
+        } else {
+            $historic = $record->get_record_by_id_and_user_id($data_form['id_record'], auth()->user()->id)->first()->historics();
+
+            $historic = $historic->paginate($this->total_page);
+            return view('users.history.record_history', compact('historic'));
+        }
+    }
+
+    /**
+     * This method search a personal record set
+     * @param Request $request
+     * @param Record $record
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function search_personal_records(Request $request, Record $record){
         $data_form = $request->except('_token');
         $records = $record->search_personal_records($data_form, $this->total_page, auth()->user()->id);
