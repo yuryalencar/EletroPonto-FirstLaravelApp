@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'Personal Time Record')
+@section('title', 'EletronicPoint - Registro Pessoal')
 
 @section('content_header')
-    <h1>Personal Time Record</h1>
+    <h1>Registro Pessoal</h1>
 @stop
 
 @section('content')
@@ -28,20 +28,18 @@
         <div class="box box-title">
 
             <div class="box-header">
-                <h3 class="box-title">Insert a new record:</h3>
+                <h3 class="box-title">Insira um novo registro:</h3>
             </div>
 
             <div class="box-body">
 
                 <div class="form-group">
-
-                    <label>Insert Current Time:</label>
                     <!-- This is the form for the registration point that inserts an hour -->
 
                     <form method="post" action="{{ route('records.personal.current') }}">
                         {!! csrf_field() !!}
                         <div class="input-group">
-                            <button type="submit" class="btn btn-block btn-primary">Record Current Time</button>
+                            <button type="submit" class="btn btn-block btn-primary">Gravar horário atual</button>
 
                             <div class="input-group-addon">
                                 <i class="fa fa-save"></i>

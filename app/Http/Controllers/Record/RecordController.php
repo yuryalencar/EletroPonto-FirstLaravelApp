@@ -26,7 +26,7 @@ class RecordController extends Controller
         $user = $user->get_by_id($request['user_id']);
 
         if (!(isset($request['time'])) or $request['time'] == "") {
-            $request->session()->flash("error_insert_data", "Invalid time, please check field");
+            $request->session()->flash("error_insert_data", "Horário inválido, por favor verifique o horário informado");
             return view('admin.records.insert_hour_for_employee', compact('user'));
         }
 
@@ -43,27 +43,41 @@ class RecordController extends Controller
 
         $this->register_historic($record, auth()->user());
 
-        $request->session()->flash("success_insert_data", "Record has been added");
+        $request->session()->flash("success_insert_data", "Registro salvo com sucesso");
         return view('admin.records.insert_hour_for_employee', compact('user'));
     }
 
     /**
-     * This function get a record historic
+     * This function get a personal record historic
      * @param Request $request
      * @param Record $record
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function historic_record(Request $request, Record $record)
+    public function historic_personal_record(Request $request, Record $record)
     {
         $data_form = $request->except('_token');
-        if ((Gate::allows('admin'))) {
-            dd($record->get_record_by_id($data_form['id_record']));
-            //@TODO
-        } else {
-            $historic = $record->get_record_by_id_and_user_id($data_form['id_record'], auth()->user()->id)->first()->historics();
+        $historic = $record->get_record_by_id($data_form['id_record'])->first()->historics();
 
-            $historic = $historic->paginate($this->total_page);
-            return view('users.history.record_history', compact('historic'));
+        $historic = $historic->paginate($this->total_page);
+        return view('users.history.record_history', compact('historic'));
+    }
+
+    public function records_employee(Request $request, User $user, Record $example_record){
+        if ((Gate::allows('admin'))) {
+            $user = $user->get_by_id($request['user_id']);
+            $records = $user->records()->paginate($this->total_page);
+            $types = $example_record->getAllTypes();
+            return view('collaborator.home.index', compact('records', 'types', 'user'));
+        } else {
+            return redirect()->route('navigation.home');
+        }
+    }
+
+    public function  detailed_records_employee(Request $request, Record $record){
+        if ((Gate::allows('admin'))) {
+            dd($request);
+        } else {
+            return redirect()->route('navigation.home');
         }
     }
 
@@ -73,13 +87,13 @@ class RecordController extends Controller
      * @param Record $record
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function search_personal_records(Request $request, Record $record)
+    public function search_personal_records(Request $request, Record $record, User $user)
     {
         $data_form = $request->except('_token');
-        $records = $record->search_personal_records($data_form, $this->total_page, auth()->user()->id);
+        $records = $record->search_personal_records($data_form, $this->total_page, $request['user_id']);
         $types = $record->getAllTypes();
-
-        return view('collaborator.home.index', compact('records', 'types', 'data_form'));
+        $user = $user->get_by_id($request['user_id']);
+        return view('collaborator.home.index', compact('records', 'types', 'user'));
     }
 
     /**
@@ -101,7 +115,7 @@ class RecordController extends Controller
 
         $this->register_historic($record, auth()->user());
 
-        return back()->with('success_insert_personal_data', 'Record has been added');
+        return back()->with('success_insert_personal_data', 'Registro salvo com sucesso');
     }
 
     /**

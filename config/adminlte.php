@@ -108,49 +108,61 @@ return [
     */
 
     'menu' => [
-        'MAIN MENU',
+        'MENU',
         [
             'text' => 'Home',
             'url' => 'dashboard',
             'icon' => 'home',
         ],
-        'ACCOUNT SETTINGS',
+        'REGISTROS',
         [
-            'text' => 'Profile',
-            'url' => 'admin/settings',
-            'icon' => 'user-circle',
-        ],
-        [
-            'text' => 'Change Password',
-            'url' => 'admin/settings',
-            'icon' => 'lock',
-        ],
-        'REPORTING',
-        [
-            'text' => 'Personal Time Record',
+            'text' => 'Inserir Registro Pessoal',
             'icon' => 'user',
             'url' => 'personal_record',
         ],
         [
-            'text' => 'Employee Time Record',
+            'text' => 'Inserir Registro de Colaborador',
             'url' => 'employee_record',
             'icon' => 'users',
             'can' => 'admin',
         ],
         [
-            'text' => 'History',
+            'text' => 'Históricos',
             'icon' => 'history',
             'submenu' => [
                 [
-                    'text' => 'Personal history',
-                    'url' => 'personal_history',
+                    'text' => 'Histórico Pessoal',
+                    'icon' => 'history',
+                    'submenu' => [
+                        [
+                            'text' => 'Histórico Detalhado',
+                            'url' => 'personal_history',
+                        ],
+                        [
+                            'text' => 'Histórico dos Registros',
+                            'url' => 'admin_record_history',
+                            'can' => 'admin'
+                        ],
+                    ]
                 ],
                 [
-                    'text' => 'History of Employees',
+                    'text' => 'Histórico de Colaborador',
                     'url' => 'history_employees',
-                    'can' => 'admin'
+                    'icon' => 'history',
+                    'can' => 'admin',
+                    'submenu' => [
+                        [
+                            'text' => 'Histórico Detalhado',
+                            'url' => 'view_detailed_historic_employee',
+                        ],
+                        [
+                            'text' => 'Histórico dos Registros',
+                            'url' => 'view_record_historic_employee',
+                            'can' => 'admin'
+                        ],
+                    ]
                 ],
-            ]
+            ],
         ],
     ],
 

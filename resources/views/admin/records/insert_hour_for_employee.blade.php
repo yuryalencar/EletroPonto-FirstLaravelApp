@@ -1,9 +1,8 @@
 @extends('adminlte::page')
 
-@section('title', 'Employee Time Record')
+@section('title', 'EletronicPoint - Registrar Horários dos Colaboradores')
 
 @section('content_header')
-    <h1>Employee Time Record</h1>
 @stop
 
 @section('content')
@@ -34,14 +33,14 @@
         <div class="box box-title">
 
             <div class="box-header">
-                <h3 class="box-title">Insert a new record for {{$user->name}}:</h3>
+                <h3 class="box-title">Inserir um novo registro para {{$user->name}}:</h3>
             </div>
 
             <div class="box-body">
 
                 <div class="form-group">
 
-                    <label>Insert Time:</label>
+                    <label>Selecione o horário:</label>
                     <!-- This is the form for the registration point that inserts an hour -->
 
                     <form method="post" action="{{ route('insert.employee.records') }}">
@@ -49,7 +48,7 @@
                         <input type="time" name="time" class="form-control"/>
                         <div class="input-group">
                             <button type="submit" name="user_id" value="{{$user->id}}"
-                                    class="btn btn-block btn-primary">Record Time
+                                    class="btn btn-block btn-primary">Registrar horário
                             </button>
 
                             <div class="input-group-addon">

@@ -30,9 +30,9 @@ class NavigationController extends Controller
             return view('admin.home.index');
         } else {
             $records = auth()->user()->records()->paginate($this->total_page);
-
+            $user = auth()->user();
             $types = $record->getAllTypes();
-            return view('collaborator.home.index', compact('records', 'types'));
+            return view('collaborator.home.index', compact('records', 'types', 'user'));
         }
     }
 
@@ -53,7 +53,40 @@ class NavigationController extends Controller
     {
         if ((Gate::allows('admin'))) {
             $users = Auth::user()->all()->where('is_admin', 0);
-            return view('admin.records.employee_record', compact('users'));
+            $action = 'insert';
+            return view('admin.records.employee_record', compact('users', 'action'));
+        } else {
+            return redirect()->route('navigation.home');
+        }
+    }
+
+    /**
+     * This method verify a permission user and presentation a choose collaborator
+     * for detailed historic
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
+    public function view_detailed_historic_employee()
+    {
+        if ((Gate::allows('admin'))) {
+            $users = Auth::user()->all()->where('is_admin', 0);
+            $action = 'detailed_historic';
+            return view('admin.records.employee_record', compact('users', 'action'));
+        } else {
+            return redirect()->route('navigation.home');
+        }
+    }
+
+    /**
+     * This method verify a permission user and presentation a choose collaborator
+     * for record historic
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
+    public function view_record_historic_employee()
+    {
+        if ((Gate::allows('admin'))) {
+            $users = Auth::user()->all()->where('is_admin', 0);
+            $action = 'record_historic';
+            return view('admin.records.employee_record', compact('users', 'action'));
         } else {
             return redirect()->route('navigation.home');
         }
@@ -93,11 +126,26 @@ class NavigationController extends Controller
     {
         if ((Gate::allows('admin'))) {
             $user = $user->get_by_id($request['user_id']);
-
             return view('admin.records.insert_hour_for_employee', compact('user'));
         }
 
     }
 
+    /**
+     *  This method verify access level and redirect for respective record page
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
+    public function admin_record_history(Record $record)
+    {
+        if ((Gate::allows('admin'))) {
+            $records = auth()->user()->records()->paginate($this->total_page);
+            $types = $record->getAllTypes();
+            $user = auth()->user();
+
+            return view('collaborator.home.index', compact('records', 'types', 'user'));
+        } else {
+            return redirect()->route('navigation.home');
+        }
+    }
 
 }

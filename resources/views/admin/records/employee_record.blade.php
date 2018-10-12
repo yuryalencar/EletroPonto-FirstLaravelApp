@@ -1,27 +1,32 @@
 @extends('adminlte::page')
 
-@section('title', 'Employee Time Record')
+@section('title', 'EletronicPoint - Escolha o Colaborador')
 
 @section('content_header')
-    <h1>Employee Time Record</h1>
 @stop
 
 @section('content')
     <div class="box">
         <div class="box-header">
-            <h3 class="box-title">Choose a Collaborator</h3>
+            <h3 class="box-title">Escolha o Colaborador:</h3>
         </div>
         <div class="box-body">
-            <form action="{{route('view.insert.records.employee')}}" method="POST" class="form form-inline">
+            @if($action == 'insert')
+                <form action="{{route('view.insert.records.employee')}}" method="POST" class="form form-inline">
+            @elseif($action == 'detailed_historic')
+                <form action="{{route('view.detailed.records.employee')}}" method="POST" class="form form-inline">
+            @elseif($action == 'record_historic')
+                <form action="{{route('view.records.employee')}}" method="POST" class="form form-inline">
+            @endif
                 {!! csrf_field() !!}
 
                 <table class="table table-bordered table-hover">
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
-                        <th>Contact</th>
-                        <th>Action</th>
+                        <th>Nome</th>
+                        <th>Contato</th>
+                        <th>Ação</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -31,7 +36,7 @@
                             <td>{{$user->name}}</td>
                             <td>{{$user->email}}</td>
                             <td>
-                                <button type="submit" name="user_id" value="{{$user->id}}" class="btn btn-bitbucket">Select Here
+                                <button type="submit" name="user_id" value="{{$user->id}}" class="btn btn-bitbucket">Selecionar
                                 </button>
                             </td>
                         </tr>

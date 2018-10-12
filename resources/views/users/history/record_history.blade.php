@@ -1,24 +1,24 @@
 @extends('adminlte::page')
 
-@section('title', 'Personal History')
+@section('title', 'EletronicPoint - Histórico do Registro')
 
 @section('content_header')
-    <h1>Register History</h1>
+    <h1>Histórico do Registro</h1>
 @stop
 
 @section('content')
     <div class="box">
         <div class="box-header">
-            <h3 class="box-title">More Details</h3>
+            <h3 class="box-title">Detalhes</h3>
         </div>
         <div class="box-body">
             <table class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                    <th>Created By</th>
-                    <th>Date</th>
-                    <th>Hour</th>
-                    <th>Created At</th>
+                    <th>Criado por</th>
+                    <th>Data</th>
+                    <th>Hora</th>
+                    <th>Registrado em</th>
                 </tr>
                 </thead>
                 <tbody>

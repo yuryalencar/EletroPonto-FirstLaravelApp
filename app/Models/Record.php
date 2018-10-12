@@ -32,16 +32,16 @@ class Record extends Model
     {
         switch ($this->type) {
             case 'I':
-                return 'Entry';
+                return 'Entrada';
                 break;
             case 'II':
-                return 'Break Work';
+                return 'Saída para o intervalo';
                 break;
             case 'OI':
-                return 'Return to Work';
+                return 'Retorno do intervalo';
                 break;
             case 'O':
-                return 'Leave work';
+                return 'Saída';
                 break;
         }
     }
@@ -53,10 +53,10 @@ class Record extends Model
     public function getAllTypes()
     {
         return [
-            'I' => 'Entry',
-            'II' => 'Break Work',
-            'OI' => 'Return to Work',
-            'O' => 'Leave work',
+            'I' => 'Entrada',
+            'II' => 'Saída para o intervalo',
+            'OI' => 'Retorno do intervalo',
+            'O' => 'Saída',
         ];
     }
 
@@ -88,7 +88,6 @@ class Record extends Model
      */
     public function search_personal_records(Array $data, $total_page, $id)
     {
-
         $records = $this->where(function ($query) use ($id, $data) {
             if (isset($data['id']))
                 $query->where('id', $data['id']);
@@ -119,6 +118,13 @@ class Record extends Model
     public function get_record_by_id_and_user_id($id, $user_id)
     {
         return $this->where('id', $id)->where('user_id', $user_id);
+    }
+
+    /**
+     * This method create a relationship between record and historics
+     */
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 
 }

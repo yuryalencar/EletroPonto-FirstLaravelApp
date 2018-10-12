@@ -1,16 +1,16 @@
 @extends('adminlte::page')
 
-@section('title', 'Personal History')
+@section('title', 'EletronicPoint - Histórico Pessoal')
 
 @section('content_header')
-    <h1>Personal History</h1>
+    <h1>Histórico Pessoal</h1>
 @stop
 
 @section('content')
     <div class="box">
 
         <div class="box-header">
-            <h3 class="box-title">Detailed History</h3>
+            <h3 class="box-title">Histórico Detalhado</h3>
         </div>
 
         <div class="box-body">
@@ -18,12 +18,12 @@
             <table class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Entry</th>
-                    <th>Break Work</th>
-                    <th>Return to Work</th>
-                    <th>Leave work</th>
-                    <th>Total Hours Worked</th>
+                    <th>Data</th>
+                    <th>Entrada</th>
+                    <th>Saída para o intervalo</th>
+                    <th>Retorno do intervalo</th>
+                    <th>Saída</th>
+                    <th>Total de horas trabalhadas</th>
                 </tr>
                 </thead>
                 <tbody>
