@@ -3,7 +3,7 @@
 @section('title', 'EletronicPoint - Histórico Pessoal')
 
 @section('content_header')
-    <h1>Histórico Pessoal</h1>
+    <h1>{{$user->name}} - Histórico</h1>
 @stop
 
 @section('content')

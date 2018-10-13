@@ -111,9 +111,9 @@ class NavigationController extends Controller
      */
     public function personal_history()
     {
-
         $record_formated = auth()->user()->historic_formated();
-        return view('users.history.personal_history', compact('record_formated'));
+        $user = auth()->user();
+        return view('users.history.personal_history', compact('record_formated', 'user'));
     }
 
     /**
@@ -148,4 +148,21 @@ class NavigationController extends Controller
         }
     }
 
+    /**
+     * This method verify type user and redirect for edit a respective record
+     * @param Request $request
+     * @param Record $record
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit_employee_record(Request $request, Record $record)
+    {
+        if ((Gate::allows('admin'))) {
+            $record = $record->get_record_by_id($request['id_record'])->first();
+            $user = auth()->user();
+            return view('admin.records.edit_record_for_employee', compact('record', 'user'));
+        } else {
+            return redirect()->route('navigation.home');
+        }
+
+    }
 }

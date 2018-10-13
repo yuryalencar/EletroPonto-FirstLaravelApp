@@ -15,6 +15,16 @@ class RecordController extends Controller
 
     private $total_page = 10;
 
+
+    public function save_record(Request $request, User $user, Record $record){
+        $record = $record->get_record_by_id($request['id_record'])->first();
+        $business_hours = new Carbon($request['date'].' '.$request['time']);
+        $data_update['business_hours'] = $business_hours;
+        $record->update($data_update);
+        $this->register_historic($record, auth()->user());
+        echo'acho que foi vê la';
+    }
+
     /**
      *
      * @param Request $request
@@ -62,7 +72,15 @@ class RecordController extends Controller
         return view('users.history.record_history', compact('historic'));
     }
 
-    public function records_employee(Request $request, User $user, Record $example_record){
+    /**
+     * This method verify user and redirect for collaborators records if is admin user
+     * @param Request $request
+     * @param User $user
+     * @param Record $example_record
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
+    public function records_employee(Request $request, User $user, Record $example_record)
+    {
         if ((Gate::allows('admin'))) {
             $user = $user->get_by_id($request['user_id']);
             $records = $user->records()->paginate($this->total_page);
@@ -73,9 +91,18 @@ class RecordController extends Controller
         }
     }
 
-    public function  detailed_records_employee(Request $request, Record $record){
+    /**
+     * This method get a collaborator detailed historic for admin.
+     * @param Request $request
+     * @param User $user
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
+    public function detailed_records_employee(Request $request, User $user)
+    {
         if ((Gate::allows('admin'))) {
-            dd($request);
+            $user = $user->get_by_id($request['user_id']);
+            $record_formated = $user->historic_formated();
+            return view('users.history.personal_history', compact('record_formated', 'user'));
         } else {
             return redirect()->route('navigation.home');
         }

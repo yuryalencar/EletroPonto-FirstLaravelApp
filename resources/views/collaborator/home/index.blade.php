@@ -49,7 +49,7 @@
                                     </button>
                                 </form>
                                 @can('admin')
-                                    <form action="{{route('record.historic')}}" method="POST">
+                                    <form action="{{route('edit.records.employee')}}" method="POST">
                                         {!! csrf_field() !!}
                                         <button type="submit" name="id_record" value="{{$record->id}}"
                                                 class="btn btn-google">Editar
