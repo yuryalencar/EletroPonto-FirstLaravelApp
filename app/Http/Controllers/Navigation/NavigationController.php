@@ -20,10 +20,12 @@ class NavigationController extends Controller
      *  This method verify access level and redirect for respective dashboard page
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
-    public function index(Record $record)
+    public function index(Record $record, User $user)
     {
         if ((Gate::allows('admin'))) {
-            return view('admin.home.index');
+            $amount_collaborators = sizeof($user->get_all_collaborators()->get());
+            $amount_records = sizeof($record->get_all_records()->get());
+            return view('admin.home.index', compact('amount_collaborators', 'amount_records'));
         } else {
             $records = auth()->user()->records()->get();
             $user = auth()->user();

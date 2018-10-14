@@ -126,4 +126,12 @@ class Record extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * This method select all records inserts in database
+     * @return mixed
+     */
+    public function get_all_records(){
+        return $this->where('id', '>=', 1);
+    }
+
 }

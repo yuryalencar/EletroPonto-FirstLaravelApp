@@ -251,4 +251,12 @@ class User extends Authenticatable
 
         return $users;
     }
+
+    /**
+     * This method get all collaborators in database
+     * @return mixed
+     */
+    public function get_all_collaborators(){
+        return $this->where('is_admin', 0);
+    }
 }
