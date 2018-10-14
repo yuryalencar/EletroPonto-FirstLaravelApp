@@ -28,7 +28,7 @@ $this->post('record_time', 'Record\RecordController@record_time')->middleware('v
 $this->post('historic_personal_record', 'Record\RecordController@historic_personal_record')->middleware('verify.user')->name('record.historic');
 $this->post('insert_employee_record', 'Record\RecordController@insert_employee_record')->middleware('verify.user')->name('insert.employee.records');
 $this->post('detailed_records_employee', 'Record\RecordController@detailed_records_employee')->middleware('verify.user')->name('view.detailed.records.employee');
-$this->post('records_employee', 'Record\RecordController@records_employee')->middleware('verify.user')->name('view.records.employee');
+$this->any('records_employee', 'Record\RecordController@records_employee')->middleware('verify.user')->name('view.records.employee');
 $this->post('save_record', 'Record\RecordController@save_record')->middleware('verify.user')->name('save.edit.records.employee');
 $this->any('search_personal_records', 'Record\RecordController@search_personal_records')->middleware('verify.user')->name('records.personal.search');
 

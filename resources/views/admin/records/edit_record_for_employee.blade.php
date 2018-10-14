@@ -18,15 +18,9 @@
             </div>
         @endif
 
-        @if (\Session::has('success_insert_data'))
+        @if (\Session::has('success'))
             <div class="alert alert-success">
-                <p>{{\Session::get('success_insert_data')}}</p>
-            </div>
-        @endif
-
-        @if (\Session::has('error_insert_data'))
-            <div class="alert alert-danger">
-                <p>{{\Session::get('error_insert_data')}}</p>
+                <p>{{\Session::get('success')}}</p>
             </div>
         @endif
 

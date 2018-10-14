@@ -69,6 +69,7 @@ class NavigationController extends Controller
     {
         if ((Gate::allows('admin'))) {
             $users = Auth::user()->all()->where('is_admin', 0);
+            dd($users);
             $action = 'detailed_historic';
             return view('admin.records.employee_record', compact('users', 'action'));
         } else {

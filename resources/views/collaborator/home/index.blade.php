@@ -62,11 +62,6 @@
                 @endforeach
                 </tbody>
             </table>
-            @if(isset($data_form))
-                {!! $records->appends($data_form)->links() !!}
-            @else
-                {!! $records->links() !!}
-            @endif
         </div>
     </div>
 @stop

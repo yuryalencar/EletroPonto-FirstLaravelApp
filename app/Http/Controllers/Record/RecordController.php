@@ -16,13 +16,25 @@ class RecordController extends Controller
     private $total_page = 10;
 
 
-    public function save_record(Request $request, User $user, Record $record){
+    public function save_record(Request $request, Record $record){
+
         $record = $record->get_record_by_id($request['id_record'])->first();
+
+
+        if(!isset($request['date']) or $request['date'] == ""){
+            $request->session()->flash("error", "");
+            return view('admin.records.edit_record_for_employee', compact('record'))->withErrors(['Data inválida, por favor verifique a data informada']);
+        }
+
+        if(!isset($request['time']) or $request['time'] == ""){
+            return view('admin.records.edit_record_for_employee', compact('record'))->withErrors(['Horário inválido, por favor verifique o horário informado']);
+        }
+
         $business_hours = new Carbon($request['date'].' '.$request['time']);
         $data_update['business_hours'] = $business_hours;
         $record->update($data_update);
         $this->register_historic($record, auth()->user());
-        echo'acho que foi vê la';
+        return view('admin.records.edit_record_for_employee', compact('record'))->with(['success', 'Registro Editado com Sucesso !']);
     }
 
     /**
@@ -36,8 +48,7 @@ class RecordController extends Controller
         $user = $user->get_by_id($request['user_id']);
 
         if (!(isset($request['time'])) or $request['time'] == "") {
-            $request->session()->flash("error_insert_data", "Horário inválido, por favor verifique o horário informado");
-            return view('admin.records.insert_hour_for_employee', compact('user'));
+            return view('admin.records.insert_hour_for_employee', compact('user'))->withErrors(['Horário inválido, por favor verifique o horário informado']);
         }
 
         $user = $user->get_by_id($request['user_id']);
@@ -66,10 +77,10 @@ class RecordController extends Controller
     public function historic_personal_record(Request $request, Record $record)
     {
         $data_form = $request->except('_token');
-        $historic = $record->get_record_by_id($data_form['id_record'])->first()->historics();
+        $historic = $record->get_record_by_id($data_form['id_record'])->first()->historics()->get();
 
-        $historic = $historic->paginate($this->total_page);
-        return view('users.history.record_history', compact('historic'));
+        //$historic = $historic->paginate($this->total_page);
+        return view('users.history.record_history', compact('historic', 'data_form'));
     }
 
     /**
@@ -82,8 +93,10 @@ class RecordController extends Controller
     public function records_employee(Request $request, User $user, Record $example_record)
     {
         if ((Gate::allows('admin'))) {
+            $data_form = $request->except('_token');
             $user = $user->get_by_id($request['user_id']);
-            $records = $user->records()->paginate($this->total_page);
+            $records = $user->records()->get();//paginate($this->total_page);
+            //dd($records);
             $types = $example_record->getAllTypes();
             return view('collaborator.home.index', compact('records', 'types', 'user'));
         } else {

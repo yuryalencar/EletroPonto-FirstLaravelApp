@@ -32,7 +32,6 @@
                 @endforeach
                 </tbody>
             </table>
-
         </div>
     </div>
 @stop

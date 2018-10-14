@@ -24,12 +24,6 @@
             </div>
         @endif
 
-        @if (\Session::has('error_insert_data'))
-            <div class="alert alert-danger">
-                <p>{{\Session::get('error_insert_data')}}</p>
-            </div>
-        @endif
-
         <div class="box box-title">
 
             <div class="box-header">
