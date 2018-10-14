@@ -41,18 +41,18 @@
                         <td>{{$record->getHour()}}</td>
                         <td>{{$record->getType()}}</td>
                         <td>
-                            <div class="btn-group user-block">
-                                <form action="{{route('record.historic')}}" method="POST">
+                            <div class="btn-group">
+                                <form action="{{route('record.historic')}}" method="POST" style="display: inline">
                                     {!! csrf_field() !!}
-                                    <button type="submit" name="id_record" value="{{$record->id}}"
-                                            class="btn btn-bitbucket">Ver Detalhes
+                                    <button type="submit" title="Mais Detalhes" name="id_record" value="{{$record->id}}"
+                                            class="btn btn-bitbucket" ><i class="fa fa-info-circle"></i>
                                     </button>
                                 </form>
                                 @can('admin')
-                                    <form action="{{route('edit.records.employee')}}" method="POST">
+                                    <form action="{{route('edit.records.employee')}}" method="POST" style="display: inline">
                                         {!! csrf_field() !!}
-                                        <button type="submit" name="id_record" value="{{$record->id}}"
-                                                class="btn btn-google">Editar
+                                        <button type="submit" title="Editar" name="id_record" value="{{$record->id}}"
+                                                class="btn btn-google"><i class="fa fa-edit"></i>
                                         </button>
                                     </form>
                                 @endcan

@@ -82,11 +82,10 @@ class Record extends Model
      * This method search a personal records set based in user id, id, type and date, and return
      * set records with pagination
      * @param array $data
-     * @param $total_page
      * @param $id
      * @return mixed
      */
-    public function search_personal_records(Array $data, $total_page, $id)
+    public function search_personal_records(Array $data, $id)
     {
         $records = $this->where(function ($query) use ($id, $data) {
             if (isset($data['id']))
@@ -97,7 +96,7 @@ class Record extends Model
                 $query->whereDate('business_hours', $data['date']);
         })->where('user_id', $id);
 
-        return $records->paginate($total_page);
+        return $records;
     }
 
     /**

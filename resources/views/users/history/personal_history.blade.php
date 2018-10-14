@@ -15,6 +15,15 @@
 
         <div class="box-body">
 
+            <form action="{{route('search.detailed')}}" method="POST" class="form form-inline">
+                {!! csrf_field() !!}
+                <label>Data: </label>
+                <input type="date" name="date" class="form-control"/>
+                <button type="submit" name='user_id' value='{{$user->id}}' class="btn btn-primary">Pesquisar</button>
+            </form>
+
+            <br/>
+
             <table class="table table-bordered table-hover">
                 <thead>
                 <tr>

@@ -30,7 +30,10 @@ $this->post('insert_employee_record', 'Record\RecordController@insert_employee_r
 $this->post('detailed_records_employee', 'Record\RecordController@detailed_records_employee')->middleware('verify.user')->name('view.detailed.records.employee');
 $this->any('records_employee', 'Record\RecordController@records_employee')->middleware('verify.user')->name('view.records.employee');
 $this->post('save_record', 'Record\RecordController@save_record')->middleware('verify.user')->name('save.edit.records.employee');
+$this->post('search_detailed_records_employee', 'Record\RecordController@search_detailed_records_employee')->middleware('verify.user')->name('search.detailed');
 $this->any('search_personal_records', 'Record\RecordController@search_personal_records')->middleware('verify.user')->name('records.personal.search');
+
+$this->post('search_user', 'User\UserController@search_user')->middleware('verify.user')->name('search.user');
 
 $this->get('login', function (){return view('auth.login');});
 

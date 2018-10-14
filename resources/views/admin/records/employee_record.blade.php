@@ -11,6 +11,17 @@
             <h3 class="box-title">Escolha o Colaborador:</h3>
         </div>
         <div class="box-body">
+
+            <form action="{{route('search.user')}}" method="POST" class="form form-inline">
+                {!! csrf_field() !!}
+                <input type="text" name="id" class="form-control" placeholder="ID"/>
+                <input type="text" name="name" class="form-control" placeholder="Nome do Colaborador"/>
+                <input type="text" name="email" class="form-control" placeholder="E-mail do Colaborador"/>
+                <button type="submit" name='action' value='{{$action}}' class="btn btn-primary">Pesquisar</button>
+            </form>
+
+            <br/>
+
             @if($action == 'insert')
                 <form action="{{route('view.insert.records.employee')}}" method="POST" class="form form-inline">
             @elseif($action == 'detailed_historic')

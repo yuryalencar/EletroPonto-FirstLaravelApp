@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Navigation;
 
-use App\Models\Historic;
 use App\Models\Record;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 
 /**
  * Class NavigationController
@@ -18,8 +16,6 @@ use Carbon\Carbon;
  */
 class NavigationController extends Controller
 {
-    private $total_page = 10;
-
     /**
      *  This method verify access level and redirect for respective dashboard page
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
@@ -29,7 +25,7 @@ class NavigationController extends Controller
         if ((Gate::allows('admin'))) {
             return view('admin.home.index');
         } else {
-            $records = auth()->user()->records()->paginate($this->total_page);
+            $records = auth()->user()->records()->get();
             $user = auth()->user();
             $types = $record->getAllTypes();
             return view('collaborator.home.index', compact('records', 'types', 'user'));
@@ -69,7 +65,6 @@ class NavigationController extends Controller
     {
         if ((Gate::allows('admin'))) {
             $users = Auth::user()->all()->where('is_admin', 0);
-            dd($users);
             $action = 'detailed_historic';
             return view('admin.records.employee_record', compact('users', 'action'));
         } else {
@@ -139,7 +134,7 @@ class NavigationController extends Controller
     public function admin_record_history(Record $record)
     {
         if ((Gate::allows('admin'))) {
-            $records = auth()->user()->records()->paginate($this->total_page);
+            $records = auth()->user()->records()->get();
             $types = $record->getAllTypes();
             $user = auth()->user();
 

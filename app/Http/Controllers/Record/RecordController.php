@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Record;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Record;
-use App\Models\Historic;
 use Carbon\Carbon;
 use App\User;
 use Illuminate\Support\Facades\Gate;
@@ -13,20 +12,24 @@ use Illuminate\Support\Facades\Gate;
 class RecordController extends Controller
 {
 
-    private $total_page = 10;
-
-
+    /**
+     * This method save a edit record
+     * @param Request $request
+     * @param Record $record
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function save_record(Request $request, Record $record){
 
         $record = $record->get_record_by_id($request['id_record'])->first();
 
 
         if(!isset($request['date']) or $request['date'] == ""){
-            $request->session()->flash("error", "");
+            session()->remove('success_edit_record');
             return view('admin.records.edit_record_for_employee', compact('record'))->withErrors(['Data inválida, por favor verifique a data informada']);
         }
 
         if(!isset($request['time']) or $request['time'] == ""){
+            session()->remove('success_edit_record');
             return view('admin.records.edit_record_for_employee', compact('record'))->withErrors(['Horário inválido, por favor verifique o horário informado']);
         }
 
@@ -34,11 +37,12 @@ class RecordController extends Controller
         $data_update['business_hours'] = $business_hours;
         $record->update($data_update);
         $this->register_historic($record, auth()->user());
-        return view('admin.records.edit_record_for_employee', compact('record'))->with(['success', 'Registro Editado com Sucesso !']);
+        session()->flash('success_edit_record', 'Registro Editado com Sucesso !');
+        return view('admin.records.edit_record_for_employee', compact('record'));
     }
 
     /**
-     *
+     * This Method insert a new record for collaborator if you are an administrator
      * @param Request $request
      * @param User $user
      * @return \Illuminate\Http\RedirectResponse
@@ -79,7 +83,6 @@ class RecordController extends Controller
         $data_form = $request->except('_token');
         $historic = $record->get_record_by_id($data_form['id_record'])->first()->historics()->get();
 
-        //$historic = $historic->paginate($this->total_page);
         return view('users.history.record_history', compact('historic', 'data_form'));
     }
 
@@ -93,10 +96,8 @@ class RecordController extends Controller
     public function records_employee(Request $request, User $user, Record $example_record)
     {
         if ((Gate::allows('admin'))) {
-            $data_form = $request->except('_token');
             $user = $user->get_by_id($request['user_id']);
-            $records = $user->records()->get();//paginate($this->total_page);
-            //dd($records);
+            $records = $user->records()->get();
             $types = $example_record->getAllTypes();
             return view('collaborator.home.index', compact('records', 'types', 'user'));
         } else {
@@ -122,6 +123,19 @@ class RecordController extends Controller
     }
 
     /**
+     * This method search in detailed historic
+     * @param Request $request
+     * @param User $user
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function search_detailed_records_employee(Request $request, User $user){
+            $user = $user->get_by_id($request['user_id']);
+            $data_form = $request->except('_token');
+            $record_formated = $user->search_historic_formated($data_form);
+            return view('users.history.personal_history', compact('record_formated', 'user'));
+    }
+
+    /**
      * This method search a personal record set
      * @param Request $request
      * @param Record $record
@@ -130,7 +144,7 @@ class RecordController extends Controller
     public function search_personal_records(Request $request, Record $record, User $user)
     {
         $data_form = $request->except('_token');
-        $records = $record->search_personal_records($data_form, $this->total_page, $request['user_id']);
+        $records = $record->search_personal_records($data_form, $request['user_id']);
         $types = $record->getAllTypes();
         $user = $user->get_by_id($request['user_id']);
         return view('collaborator.home.index', compact('records', 'types', 'user'));
